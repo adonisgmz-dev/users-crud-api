@@ -1,4 +1,5 @@
 const users = require("../data/users.db");
+const bcrypt = require("bcrypt");
 
 // Obtener todos
 function getAllUsers() {
@@ -13,15 +14,18 @@ function getUserById(id) {
 
 // Crear usuario
 function createUser(userData) {
+    const hashedPassword = bcrypt.hashSync(userData.password, 10);
+
     const newUser = {
         id: users.length ? users[users.length - 1].id + 1 : 1,
-        ...userData
+        username: userData.username,
+        email: userData.email,
+        password: hashedPassword
     };
 
     users.push(newUser);
     return newUser;
 }
-
 // Actualizar usuario
 function updateUser(id, data) {
     const userId = Number(id);
@@ -31,7 +35,7 @@ function updateUser(id, data) {
 
     if (data.username) user.username = data.username;
     if (data.email) user.email = data.email;
-    if (data.password) user.password = data.password;
+    if (data.password) user.password = bcrypt.hashSync(data.password,10);
 
     return user;
 }
