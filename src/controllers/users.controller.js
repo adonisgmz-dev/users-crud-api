@@ -7,7 +7,7 @@ const {
 } = require("../services/users.service");
 
 // Controller para obtener usuarios
-function getUsers(req, res) {
+function getUsersController(req, res) {
     const users = getAllUsers();
     res.status(200).json(users);
 };
@@ -64,7 +64,7 @@ function deleteUserController(req, res) {
 }
 
 module.exports = {
-    getUsers,
+    getUsersController,
     createUserController,
     getUserByIdController,
     updateUserController,
