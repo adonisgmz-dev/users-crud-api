@@ -1,16 +1,17 @@
 const express = require("express");
-const app = express();
-
-// Middleware para leer JSON
-app.use(express.json());
-
+require("dotenv").config();
+const cookieParser= require("cookie-parser")
 // Importar rutas
 const usersRoutes = require("./routes/users.routes");
 
+const app = express();
+app.use(cookieParser());
+app.use(express.json());
 // Usar rutas
-app.use("/users", usersRoutes);
+app.use(usersRoutes);
 
 // Arrancar servidor
-app.listen(3000, () => {
-  console.log("Servidor corriendo en http://localhost:3000");
+const PORT = process.env.PORT || 8000;
+app.listen(PORT, () => {
+  console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
