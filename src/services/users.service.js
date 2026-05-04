@@ -1,5 +1,6 @@
 const users = require("../data/users.db");
 const bcrypt = require("bcrypt");
+const roles = require("../constants/roles.constants")
 
 // Obtener todos
 function getAllUsers() {
@@ -20,7 +21,11 @@ function createUser(userData) {
         id: users.length ? users[users.length - 1].id + 1 : 1,
         username: userData.username,
         email: userData.email,
-        password: hashedPassword
+        password: hashedPassword,
+        role: roles.USER,
+        active: true,
+        loginAttempts: 0,
+        blockedUntil: null,
     };
 
     users.push(newUser);
