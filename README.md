@@ -18,14 +18,27 @@ Una API REST de gestión de usuarios CRUD desarrollada con Node.js y Express.
 - PUT /users/:id
 - DELETE /users/:id
 
+## MEJORAS IMPLEMENTADAS
+
+- Refactor a arquitectura profesional por capas (routes, controllers, services, middlewares, data, constants)
+- Sistema de autenticación con JWT usando cookies httpOnly
+- Protección de rutas privadas y control de acceso
+- Sistema de roles y permisos centralizado
+- Seguridad en endpoints (protección contra accesos no autorizados e IDOR)
+- Hash de contraseñas con bcrypt
+- Validación básica de datos en usuarios
+- Control de intentos de login y bloqueo temporal
+
 ## PROXIMAS MEJORAS
 
-- Autenticación con JWT (login y protección de rutas)
-- Integración con base de datos (PostgreSQL + Prisma)
-- Middlewares de seguridad (validación centralizada, manejo de errores)
-- Paginación y filtros en endpoints
-- Endpoint GET /users/:id
-- Optimización de código y estructura
+- Validación avanzada con Zod
+- Middleware global de manejo de errores
+- Sanitización de respuestas (no exponer password)
+- Migración a PostgreSQL + Prisma
+- Uso de UUIDs para IDs no predecibles
+- Seguridad adicional (helmet, cors, rate limit)
+- Logging de errores y requests
+- Tests automatizados
 
 ## COMO EJECUTARLO
 
