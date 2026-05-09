@@ -1,10 +1,14 @@
 const {loginService} = require("../services/auth.service")
 
-async function loginController(req,res){
-    const { email, password } = req.body;
-    const result = await loginService(email, password);
-    if (result.success === false) {
-        return res.status(result.status).json(result)
+async function loginController(req,res, next){
+    try {
+        const { email, password } = req.body;
+        const result = await loginService(email, password);
+        if (result.success === false) {
+
+        const error = new Error(result.error);
+        error.status = result.status;
+        throw error;
     }
 
     if (result.success === true) {
@@ -17,6 +21,9 @@ async function loginController(req,res){
         });
     
         return res.status(result.status).json({ message: result.message, user: result.user });
+    }
+    } catch (error) {
+        return next(error);
     }
 }
 module.exports = { loginController };

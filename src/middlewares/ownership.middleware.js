@@ -2,7 +2,9 @@ function checkOwnershipOrRole(rolesPermitido) {
     return (req, res, next) => {
         // Validar usuario
         if (!req.user) {
-            return res.status(401).json({ error: "Usuario no autenticado" });
+            const error = new Error("Usuario no autenticado");
+            error.status = 401;
+            throw error;
         };
         // Scamos IDS
         const userIdFromToken = req.user.id;
@@ -11,7 +13,9 @@ function checkOwnershipOrRole(rolesPermitido) {
         if (userIdFromToken === userIdFromParams || req.user.role === rolesPermitido) {
             return next();
         };
-        return res.status(403).json({ error: "Acceso denegado" });
+        const error = new Error("Acceso denegado");
+        error.status = 403;
+        throw error;
     }
 };
 
