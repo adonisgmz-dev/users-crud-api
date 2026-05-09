@@ -5,18 +5,20 @@ const {
     updateUser,
     deleteUser
 } = require("../services/users.service");
+const {sanitizeUser} = require("../utils/sanitizeUser")
 
 // Controller para obtener usuarios
 function getUsersController(req, res) {
     const users = getAllUsers();
-    res.status(200).json(users);
+    const allUsers = users.map(user => sanitizeUser(user));
+    res.status(200).json(allUsers);
 };
 
 //Controller crear Usuario
 function createUserController(req, res) {
     const { username, email, password } = req.body;
     const newUser = createUser({ username, email, password });
-    return res.status(201).json({ message: "Usuario creado correctamente", user: newUser });
+    return res.status(201).json({ message: "Usuario creado correctamente", user: sanitizeUser(newUser) });
 };
 
 // Controller Buscar por ID
@@ -28,7 +30,7 @@ function getUserByIdController(req, res) {
         error.status = 404;
         throw error;
     };
-    return res.status(200).json(user)
+    return res.status(200).json(sanitizeUser(user))
 }
 // Controller actualizar usuario
 function updateUserController(req, res) {
@@ -40,7 +42,7 @@ function updateUserController(req, res) {
         error.status = 404;
         throw error;
     };
-    return res.status(200).json({ message: "Usuario actualizado", user: updatedUser });
+    return res.status(200).json({ message: "Usuario actualizado", user: sanitizeUser(updatedUser) });
 }
 
 // Controller eliminar usuario
