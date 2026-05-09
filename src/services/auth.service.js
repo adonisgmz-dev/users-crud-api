@@ -35,7 +35,7 @@ async function loginService(email, password) {
         if (user.loginAttempts >= maxIntentos) {
             user.active = false;
             user.loginAttempts = 0;
-            return { success: false, status: 403, error: "No tienes mas intentos. Tu cuenta a sido bloqueda por seguridad.Contactar con soporte" };
+            return { success: false, status: 403, error: "No tienes mas intentos. Tu cuenta ha sido bloqueda por seguridad.Contactar con soporte" };
         };
 
         if (user.loginAttempts === 3) {

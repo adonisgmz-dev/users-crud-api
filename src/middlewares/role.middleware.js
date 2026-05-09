@@ -2,11 +2,15 @@
 function checkRole(...rolesPermitidos) {
     return (req, res, next) => {
         if (!req.user) {
-            return res.status(401).json({ error: "Usuario no autenticado" });
+            const error = new Error("Usuario no autenticado");
+            error.status = 401;
+            throw error;
         }
         // No autorizado
         if (!rolesPermitidos.includes(req.user.role)) {
-            return res.status(403).json({error:"Acceso denegado"})
+            const error = new Error("Acceso denegado");
+            error.status = 403;
+            throw error;
         }
         next();
     }
