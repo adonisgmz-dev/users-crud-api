@@ -10,11 +10,15 @@ Una API REST de gestión de usuarios CRUD desarrollada con Node.js y Express.
 - Eliminar usuario
 - Validaciones de datos
 - Hash de contraseñas
+- Login con JWT
+- Roles y permisos
 
 ## ENDPOINTS
 
 - POST /users
+- POST /login
 - GET /users
+- GET /users/:id
 - PUT /users/:id
 - DELETE /users/:id
 
@@ -28,12 +32,12 @@ Una API REST de gestión de usuarios CRUD desarrollada con Node.js y Express.
 - Hash de contraseñas con bcrypt
 - Validación básica de datos en usuarios
 - Control de intentos de login y bloqueo temporal
+- Validación avanzada con Zod
+- Middleware global de manejo de errores
+- Sanitización de respuestas (no exponer datos sensibles)
 
 ## PROXIMAS MEJORAS
 
-- Validación avanzada con Zod
-- Middleware global de manejo de errores
-- Sanitización de respuestas (no exponer password)
 - Migración a PostgreSQL + Prisma
 - Uso de UUIDs para IDs no predecibles
 - Seguridad adicional (helmet, cors, rate limit)
