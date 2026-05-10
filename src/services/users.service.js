@@ -1,58 +1,59 @@
-const users = require("../data/users.db");
+const prisma = require("../config/prisma");
 const bcrypt = require("bcrypt");
 const roles = require("../constants/roles.constants")
 
 // Obtener todos
-function getAllUsers() {
-    return users;
+async function getAllUsers() {
+    return await prisma.user.findMany();
 }
 
 // Buscar por ID
-function getUserById(id) {
-    const userId = Number(id);
-    return users.find(u => u.id === userId);
+async function getUserById(id) {
+    return await prisma.user.findUnique({
+        where: {
+            id :id
+        }
+    })
 }
 
 // Crear usuario
-function createUser(userData) {
+async function createUser(userData) {
     const hashedPassword = bcrypt.hashSync(userData.password, 10);
 
-    const newUser = {
-        id: users.length ? users[users.length - 1].id + 1 : 1,
-        username: userData.username,
-        email: userData.email,
-        password: hashedPassword,
-        role: roles.USER,
-        active: true,
-        loginAttempts: 0,
-        blockedUntil: null,
-    };
-
-    users.push(newUser);
-    return newUser;
+    return await prisma.user.create({
+        data: {
+            firstName: userData.firstName,
+            lastName: userData.lastName,
+            secondLastName: userData.secondLastName,
+            username: userData.username,
+            email: userData.email,
+            password: hashedPassword,
+            role: roles.USER,
+            active: true,
+            loginAttempts: 0,
+            blockedUntil: null,
+        }    
+    });
 }
 // Actualizar usuario
-function updateUser(id, data) {
-    const userId = Number(id);
-    const user = users.find(u => u.id === userId);
+async function updateUser(id, data) {
+    const updateData = {};
 
-    if (!user) return null;
+    if (data.username) updateData.username = data.username;
+    if (data.email) updateData.email = data.email;
+    if (data.password) updateData.password = bcrypt.hashSync(data.password,10);
 
-    if (data.username) user.username = data.username;
-    if (data.email) user.email = data.email;
-    if (data.password) user.password = bcrypt.hashSync(data.password,10);
-
-    return user;
+    return await prisma.user.update({
+        where : { id },
+        data : updateData,
+    });
 }
 
 // Eliminar usuario
-function deleteUser(id) {
-    const userId = Number(id);
-    const index = users.findIndex(u => u.id === userId);
-
-    if (index === -1) return false;
-
-    users.splice(index, 1);
+async function deleteUser(id) {
+    await prisma.user.delete({
+        where : {id}
+    })
     return true;
 }
 

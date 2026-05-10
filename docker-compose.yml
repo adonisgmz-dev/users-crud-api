@@ -1,0 +1,18 @@
+services:
+  postgres:
+    image: postgres:17
+    container_name: postgres_db
+
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: pisuke123
+      POSTGRES_DB: crud_users_api
+
+    ports:
+      - "5433:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
