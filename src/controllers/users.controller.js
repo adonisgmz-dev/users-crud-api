@@ -8,23 +8,30 @@ const {
 const {sanitizeUser} = require("../utils/sanitizeUser")
 
 // Controller para obtener usuarios
-function getUsersController(req, res) {
-    const users = getAllUsers();
+async function getUsersController(req, res) {
+    const users = await getAllUsers();
     const allUsers = users.map(user => sanitizeUser(user));
     res.status(200).json(allUsers);
 };
 
 //Controller crear Usuario
-function createUserController(req, res) {
-    const { username, email, password } = req.body;
-    const newUser = createUser({ username, email, password });
+async function createUserController(req, res) {
+    const {firstName, lastName, secondLastName, username, email, password } = req.body;
+    const newUser = await createUser({
+            firstName,
+            lastName,
+            secondLastName,
+            username,
+            email,
+            password,
+    });
     return res.status(201).json({ message: "Usuario creado correctamente", user: sanitizeUser(newUser) });
 };
 
 // Controller Buscar por ID
-function getUserByIdController(req, res) {
+async function getUserByIdController(req, res) {
     const id = req.params.id;
-    const user = getUserById(id);
+    const user = await getUserById(id);
     if (!user) {
         const error = new Error("Usuario no encontrado");
         error.status = 404;
@@ -33,10 +40,10 @@ function getUserByIdController(req, res) {
     return res.status(200).json(sanitizeUser(user))
 }
 // Controller actualizar usuario
-function updateUserController(req, res) {
+async function updateUserController(req, res) {
     const id = req.params.id;
     const { username, email, password } = req.body;
-    const updatedUser = updateUser(id, { username, email, password });
+    const updatedUser = await updateUser(id, { username, email, password });
     if (!updatedUser) {
         const error = new Error("Usuario no encontrado");
         error.status = 404;
@@ -46,9 +53,9 @@ function updateUserController(req, res) {
 }
 
 // Controller eliminar usuario
-function deleteUserController(req, res) {
+async function deleteUserController(req, res) {
     const id = req.params.id;
-    const deleted = deleteUser(id);
+    const deleted = await deleteUser(id);
     if (!deleted) {
         const error = new Error("No se encontró el usuario");
         error.status = 404;
