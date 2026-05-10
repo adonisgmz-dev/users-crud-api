@@ -1,8 +1,9 @@
 const express = require("express");
 require("dotenv").config();
 const cookieParser = require("cookie-parser");
-// Seguridad
+const morgan = require("morgan");
 
+// Seguridad
 const helmet = require("helmet");
 const cors = require("cors");
 const rateLimit = require("express-rate-limit");
@@ -35,6 +36,7 @@ app.use(limiter);
 
 app.use(cookieParser());
 app.use(express.json());
+app.use(morgan("dev"));
 
 // Rutas
 app.use(usersRoutes);
