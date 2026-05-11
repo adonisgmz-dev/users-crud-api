@@ -9,9 +9,30 @@ const {sanitizeUser} = require("../utils/sanitizeUser")
 
 // Controller para obtener usuarios
 async function getUsersController(req, res) {
-    const users = await getAllUsers();
+    // Obtener page y limit desde la URL
+    const { page, limit } = req.query;
+    // Converitr page, limit a numero y si no viene nada en la URL usar los valores por defecto
+    const pageNumber = Number(page) || 1;
+    const limitNumber = Number(limit) || 5;
+    // Calcular cuantos registros deben saltar Prisma 
+    const skip = (pageNumber - 1) * limitNumber;
+
+    const { users, totalUsers } = await getAllUsers({
+        skip,
+        limit : limitNumber
+    });
+    // Calcular total de paginas redondeando hacia arriba
+    const totalPages = Math.ceil(totalUsers / limitNumber);
+    // Sanitizamos para no devolver datos sensibles
     const allUsers = users.map(user => sanitizeUser(user));
-    res.status(200).json(allUsers);
+    // Respuesta con metadata de paginacion
+    res.status(200).json({
+        page: pageNumber,
+        limit: limitNumber,
+        totalUsers,
+        totalPages,
+        users: allUsers,
+    });
 };
 
 //Controller crear Usuario

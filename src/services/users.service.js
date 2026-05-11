@@ -3,8 +3,18 @@ const bcrypt = require("bcrypt");
 const roles = require("../constants/roles.constants")
 
 // Obtener todos
-async function getAllUsers() {
-    return await prisma.user.findMany();
+async function getAllUsers({skip,limit}) {
+    const users = await prisma.user.findMany({
+        skip,
+        take : limit,
+    });
+    // Contar el total de usuario en la base de datos
+    const totalUsers = await prisma.user.count();
+
+    return {
+        users,
+        totalUsers,
+    }
 }
 
 // Buscar por ID
