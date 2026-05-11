@@ -10,7 +10,7 @@ const {sanitizeUser} = require("../utils/sanitizeUser")
 // Controller para obtener usuarios
 async function getUsersController(req, res) {
     // Obtener page y limit desde la URL
-    const { page, limit, role, active , username } = req.query;
+    const { page, limit, role, active, username, sort, order } = req.query;
     // Converitr page, limit a numero y si no viene nada en la URL usar los valores por defecto
     const pageNumber = Number(page) || 1;
     const limitNumber = Number(limit) || 5;
@@ -23,6 +23,8 @@ async function getUsersController(req, res) {
         role,
         active,
         username,
+        sort,
+        order,
     });
     // Calcular total de paginas redondeando hacia arriba
     const totalPages = Math.ceil(totalUsers / limitNumber);

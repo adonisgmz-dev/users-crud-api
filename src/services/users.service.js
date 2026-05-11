@@ -3,9 +3,20 @@ const bcrypt = require("bcrypt");
 const roles = require("../constants/roles.constants")
 
 // Obtener todos
-async function getAllUsers({ skip, limit, role, active, username }) {
+async function getAllUsers({ skip, limit, role, active, username, sort, order }) {
     // creamos un objeto donde iremos agragando filtros y prisma usara este objeto 
     const where = {};
+    // Establecemos campos permitidos
+    const allowedSortFields = ["username", "email", "createdAt"];
+    // Variable donde se guarda, empieza como undefined el usuario prodria no enviar sort en la URL
+    let orderBy = undefined;
+    if (sort && allowedSortFields.includes(sort)) {
+        orderBy = {
+            // Usamos el valor de la variable como nombre de propiedad  y un ternario
+            [sort] : order === "desc" ? "desc" : "asc",
+        }
+    }
+
     // Si viene role, active desde la URL
     if (role) {
         where.role = role;
@@ -23,6 +34,7 @@ async function getAllUsers({ skip, limit, role, active, username }) {
         skip,
         take: limit,
         where, // usar el objeto para filtrar resultados
+        orderBy,
     });
     // Contar el total de usuario en la base de datos
     const totalUsers = await prisma.user.count({
