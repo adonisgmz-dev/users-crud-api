@@ -22,7 +22,7 @@ Una API REST de gestión de usuarios CRUD desarrollada con Node.js y Express.
 - PUT /users/:id
 - DELETE /users/:id
 
-## MEJORAS IMPLEMENTADAS
+## MEJORAS  Y SEGURIDAD IMPLEMENTADAS
 
 - Refactor a arquitectura profesional por capas (routes, controllers, services, middlewares, data, constants)
 - Sistema de autenticación con JWT usando cookies httpOnly
@@ -35,14 +35,40 @@ Una API REST de gestión de usuarios CRUD desarrollada con Node.js y Express.
 - Validación avanzada con Zod
 - Middleware global de manejo de errores
 - Sanitización de respuestas (no exponer datos sensibles)
-
-## PROXIMAS MEJORAS
-
 - Migración a PostgreSQL + Prisma
 - Uso de UUIDs para IDs no predecibles
 - Seguridad adicional (helmet, cors, rate limit)
 - Logging de errores y requests
-- Tests automatizados
+
+## PROXIMAS MEJORAS
+
+- Frontend básico con HTML/CSS/JS
+- Deploy de la API
+- Docker y CI/CD
+- Refresh Tokens
+
+## ARQUITECTURA
+
+```txt
+src/
+├── controllers/
+├── routes/
+├── services/
+├── middlewares/
+├── schemas/
+├── constants/
+├── config/
+├── utils/
+
+tests/
+├── auth/
+├── users/
+
+prisma/
+
+app.js
+server.js
+```
 
 ## COMO EJECUTARLO
 
