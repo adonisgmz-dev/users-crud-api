@@ -8,7 +8,7 @@ function checkOwnershipOrRole(rolesPermitido) {
         };
         // Scamos IDS
         const userIdFromToken = req.user.id;
-        const userIdFromParams = Number(req.params.id);
+        const userIdFromParams =req.params.id;
 
         if (userIdFromToken === userIdFromParams || req.user.role === rolesPermitido) {
             return next();
